@@ -5,10 +5,11 @@ import {Document} from "mongoose";
 export class Section {
 
 
-    constructor(_id: number, title: string, content: Object) {
+    constructor(_id: number, title: string, content: Object, subSections: Array<Section>) {
         this._id = _id;
         this.title = title;
         this.content = content;
+        this.subSections = subSections;
     }
 
     @Prop()
@@ -19,6 +20,9 @@ export class Section {
 
     @Prop({type: Object})
     content: Object;
+
+    @Prop({type: Array<Section>})
+    subSections: Array<Section>;
 }
 
 export const SectionSchema = SchemaFactory.createForClass(Section);
