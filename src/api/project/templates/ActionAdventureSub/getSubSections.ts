@@ -1,12 +1,13 @@
 import {Section} from "../../schemas/section/section.schema";
+import {ContentTypeEnum} from "../../../../enums/ContentType.enum";
 
 export const getGameOveviewSubSections = () => {
     const subSections: Array<Section> = [];
-    subSections.push(new Section(subSections.length, 'Game Concept', {}, []));
-    subSections.push(new Section(subSections.length, 'Target Audience', {}, []));
-    subSections.push(new Section(subSections.length, 'Genre(s)', {}, []));
-    subSections.push(new Section(subSections.length, 'Game Flow Summary', {}, []));
-    subSections.push(new Section(subSections.length, 'Look and Feel', {}, []));
+    subSections.push(new Section(subSections.length, 'Game Concept', {}, [], ContentTypeEnum.FreeText));
+    subSections.push(new Section(subSections.length, 'Target Audience', {}, [], ContentTypeEnum.DropDown));
+    subSections.push(new Section(subSections.length, 'Genre(s)', {}, [], ContentTypeEnum.MultiSelect));
+    subSections.push(new Section(subSections.length, 'Game Flow Summary', {}, [], ContentTypeEnum.FreeText));
+    subSections.push(new Section(subSections.length, 'Look and Feel', {}, [], ContentTypeEnum.FreeText));
     return subSections;
 };
 
