@@ -31,7 +31,7 @@ export class EditorGateway implements NestGateway   {
     }
 
     @SubscribeMessage('get-document')
-    async getDocument(client: Socket, data: { projectId: string, sectionId: number }): Promise<void> {
+    async getDocument(client: Socket, data: { projectId: string, sectionId: string }): Promise<void> {
         const {projectId, sectionId} = data;
         this.logger.debug("User subscribed to get-document with id : "+projectId);
         this.logger.debug("Loading section id : "+sectionId);

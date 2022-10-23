@@ -14,14 +14,14 @@ export  class ActionAdventure extends Template{
     constructProject(project: Project) {
         this.project = project
         this.sections = [];
-        this.sections.push(new Section(this.sections.length, 'Game Overview', {}, getGameOveviewSubSections()));
-        this.sections.push(new Section(this.sections.length, 'Gameplay', {}, getGameplaySubSections()));
-        this.sections.push(new Section(this.sections.length, 'Mechanics', {}, getMechanicsSubSections()));
-        this.sections.push(new Section(this.sections.length, 'Story and Narrative', {}, getStorySubSections()));
-        this.sections.push(new Section(this.sections.length, 'Game World', {}, getWorldSubSections()));
-        this.sections.push(new Section(this.sections.length, 'Characters', {}, getCharactersSubSections()));
-        this.sections.push(new Section(this.sections.length, 'Levels', {}, getLevelsSubSections()));
-        this.sections.push(new Section(this.sections.length, 'Interface', {}, getInterfaceSubSections()));
+        this.sections.push(new Section('Game Overview', {}, getGameOveviewSubSections()));
+        this.sections.push(new Section('Gameplay', {}, getGameplaySubSections()));
+        this.sections.push(new Section('Mechanics', {}, getMechanicsSubSections()));
+        this.sections.push(new Section('Story and Narrative', {}, getStorySubSections()));
+        this.sections.push(new Section('Game World', {}, getWorldSubSections()));
+        this.sections.push(new Section('Characters', {}, getCharactersSubSections()));
+        this.sections.push(new Section('Levels', {}, getLevelsSubSections()));
+        this.sections.push(new Section('Interface', {}, getInterfaceSubSections()));
         this.project.sections = this.sections;
     }
 
