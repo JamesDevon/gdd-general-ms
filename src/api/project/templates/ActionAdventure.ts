@@ -1,6 +1,12 @@
 import {Project} from "src/api/project/schemas/project/project.schema";
 import {Section} from "src/api/project/schemas/section/section.schema";
 import {Template} from "src/api/project/templates/Template";
+import {
+    getCharactersSubSections,
+    getGameOveviewSubSections,
+    getGameplaySubSections, getInterfaceSubSections, getLevelsSubSections,
+    getMechanicsSubSections, getStorySubSections, getWorldSubSections
+} from "./ActionAdventureSub/getSubSections";
 
 export  class ActionAdventure extends Template{
 
@@ -8,13 +14,14 @@ export  class ActionAdventure extends Template{
     constructProject(project: Project) {
         this.project = project
         this.sections = [];
-        this.sections.push(new Section(this.sections.length, 'Game Overview', {}));
-        this.sections.push(new Section(this.sections.length, 'Game Background & Game Flow', {}));
-        this.sections.push(new Section(this.sections.length, 'Game Play', {}));
-        this.sections.push(new Section(this.sections.length, 'Game Play I/O Controls & GUI Interfaces', {}));
-        this.sections.push(new Section(this.sections.length, 'Visual & Audio Features', {}));
-        this.sections.push(new Section(this.sections.length, 'System Parameters & Requirements', {}));
-        this.sections.push(new Section(this.sections.length, 'Creativity & Special Enhancements in Game Concept', {}));
+        this.sections.push(new Section('Game Overview', {}, getGameOveviewSubSections()));
+        this.sections.push(new Section('Gameplay', {}, getGameplaySubSections()));
+        this.sections.push(new Section('Mechanics', {}, getMechanicsSubSections()));
+        this.sections.push(new Section('Story and Narrative', {}, getStorySubSections()));
+        this.sections.push(new Section('Game World', {}, getWorldSubSections()));
+        this.sections.push(new Section('Characters', {}, getCharactersSubSections()));
+        this.sections.push(new Section('Levels', {}, getLevelsSubSections()));
+        this.sections.push(new Section('Interface', {}, getInterfaceSubSections()));
         this.project.sections = this.sections;
     }
 

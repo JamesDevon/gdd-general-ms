@@ -5,6 +5,8 @@ import {Socket, Server} from 'socket.io';
 import {ProjectService} from "src/api/project/project.service";
 import {Project} from "src/api/project/schemas/project/project.schema";
 import {EditorService} from "./editor.service";
+import {ProjectTree} from "../../api/project/utils/ProjectTree";
+import {Section} from "../../api/project/schemas/section/section.schema";
 
 @WebSocketGateway({cors: true})
 export class EditorGateway implements NestGateway   {
@@ -19,40 +21,33 @@ export class EditorGateway implements NestGateway   {
 
     afterInit(server: Server): void {
         this.server = server;
-        this.logger.debug('WebSocket init!');
     }
 
     handleConnection(client: Socket, ...args: any[]): void {
-        this.logger.debug(`client connected: ${client.id}`);
     }
 
     handleDisconnect(client: any): void {
-        this.logger.debug(`client disconnected: ${client.id}`);
     }
 
     @SubscribeMessage('get-document')
-    async getDocument(client: Socket, data: { projectId: string, sectionId: number }): Promise<void> {
+    async getDocument(client: Socket, data: { projectId: string, sectionId: string }): Promise<void> {
         const {projectId, sectionId} = data;
-        this.logger.debug("User subscribed to get-document with id : "+projectId);
-        this.logger.debug("Loading section id : "+sectionId);
         if (projectId == null || sectionId == null) return;
-        const project: Project = await this.projectService.getProjectById(projectId);
-        const room = projectId+sectionId;
-        client.join(room);
-        this.logger.debug("User joined room : "+room);
-        const sectionIndex = project.sections.findIndex(s => s._id == sectionId);
-        if (sectionIndex == null) return ;
-        client.emit("load-document",  project.sections[sectionIndex].content || {});
-        this.logger.debug("Data emitted : "+room);
-        client.on("save-document", async (dataToSave:String) => {
-            this.logger.debug("Saving document : "+room);
-            project.sections[sectionIndex].content = dataToSave;
-            await this.projectService.updateProject(project, projectId, project.userId);
+        let project: Project = await this.projectService.getProjectById(projectId);
+        let projectTree: ProjectTree = new ProjectTree(project);
+        let sectionPath: Array<number> = projectTree.getSectionPath(sectionId);
+        if (!sectionPath.length) return ;
+        let section: Section = projectTree.getSection(sectionPath);
+        client.emit("load-document",  section.content || {});
+        client.on("save-document", async (dataToSave: {content: string}) => {
+            project = await this.projectService.getProjectById(projectId);
+            projectTree = new ProjectTree(project);
+            sectionPath = projectTree.getSectionPath(sectionId);
+            section = projectTree.getSection(sectionPath);
+            section.content = dataToSave.content;
+            projectTree.replaceSection(section, sectionPath);
+            await this.projectService.updateProject(projectTree.getProject(), projectId, project.userId);
         })
-        client.on('send-changes', (delta: string) => {
-            this.logger.debug("Broadcasting changes : "+room);
-            client.broadcast.to(room).emit('receive-changes',delta);
-        });
     }
 
 }
