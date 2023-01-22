@@ -7,6 +7,8 @@ import {TemplateEngine} from "src/project/templates/TemplateEngine";
 import {ProfileService} from "../profile/profile.service";
 import {User} from "../auth/entities/users/user.entity";
 import {HttpException} from "@nestjs/common/exceptions/http.exception";
+import {Section} from "./schemas/section/section.schema";
+import {ProjectTree} from "./utils/ProjectTree";
 
 @Injectable()
 export class ProjectService {
@@ -65,6 +67,16 @@ export class ProjectService {
         if (project.contributors.includes(user.id)) throw new HttpException('User already part of the project', 208)
         project.contributors.push(user.id);
         return this.updateProject(project, projectId, userId);
+    }
+
+    async updateProjectSection(projectId: string, sectionId, content: unknown) {
+        const project = await this.getProjectById(projectId);
+        const projectTree = new ProjectTree(project);
+        const sectionPath = projectTree.getSectionPath(sectionId);
+        const section = projectTree.getSection(sectionPath);
+        section.content = content;
+        projectTree.replaceSection(section, sectionPath);
+        return {project: await this.updateProject(projectTree.getProject(), projectId, project.userId), section};
     }
 
 }

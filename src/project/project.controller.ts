@@ -7,6 +7,7 @@ import {GetUser} from "src/auth/utils/decorators/get-user.decorator";
 import {User} from "src/auth/entities/users/user.entity";
 import {UpdateProjectRequestDto} from "src/project/dto/update-project.request.dto";
 import {InviteFriendDto} from "./dto/inviteFriend.dto";
+import {Section} from "./schemas/section/section.schema";
 
 @UseGuards(AuthGuard())
 @Controller('project')
@@ -32,6 +33,12 @@ export class ProjectController {
     @Put(":projectId")
     updateProject(@Body() project: Partial<UpdateProjectRequestDto>, @Param("projectId") projectId: string, @GetUser() user: User) : Promise<Project> {
         return this.projectService.updateProject(project, projectId, user.id);
+    }
+
+    @HttpCode(200)
+    @Put(":projectId/section/:sectionId")
+    updateProjectSection(@Body() content: any, @Param("projectId") projectId: string, @Param("sectionId") sectionId: string, @GetUser() user: User) : Promise<{project: Project, section: Section}> {
+        return this.projectService.updateProjectSection(projectId, sectionId, content.content);
     }
 
     @HttpCode(200)
