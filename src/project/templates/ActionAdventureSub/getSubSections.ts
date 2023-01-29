@@ -1,36 +1,4 @@
 import {Section} from "../../schemas/section/section.schema";
-import {ContentTypeEnum} from "../../../enums/ContentType.enum";
-import {MultiselectContent} from "../../schemas/content/MultiselectContent";
-
-const getTargetAudiences = () => {
-    const targetAudienceInfo: Array<MultiselectContent> = [];
-    targetAudienceInfo.push(new MultiselectContent('3+', ''));
-    targetAudienceInfo.push(new MultiselectContent('7+', ''));
-    targetAudienceInfo.push(new MultiselectContent('12+', ''));
-    targetAudienceInfo.push(new MultiselectContent('16+', ''));
-    targetAudienceInfo.push(new MultiselectContent('18+', ''));
-    return targetAudienceInfo;
-}
-
-export const getGameOveviewSubSections = () => {
-    const subSections: Array<Section> = [];
-    subSections.push(new Section('Game Concept', {}, [], ContentTypeEnum.FreeText));
-    subSections.push(new Section('Target Audience', getTargetAudiences(), [], ContentTypeEnum.MultiSelect));
-    subSections.push(new Section('Genre(s)', {}, [], ContentTypeEnum.MultiSelect));
-    subSections.push(new Section('Game Flow Summary', {}, [], ContentTypeEnum.FreeText));
-    subSections.push(new Section('Look and Feel', {}, [], ContentTypeEnum.FreeText));
-    return subSections;
-};
-
-export const getGameplaySubSections = () => {
-    const subSections: Array<Section> = [];
-    subSections.push(new Section('Objectives', {}, []));
-    subSections.push(new Section('Game Progression', {}, []));
-    subSections.push(new Section('Play Flow', {}, []));
-    subSections.push(new Section('Mission/challenge Structure', {}, []));
-    subSections.push(new Section('Puzzle Structure', {}, []));
-    return subSections;
-};
 
 export const getMechanicsSubSections = () => {
     const subSections: Array<Section> = [];
