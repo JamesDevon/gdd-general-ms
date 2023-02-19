@@ -3,13 +3,13 @@ import {randomUUID} from "crypto";
 export class DropDownContent {
     id: string;
     title: string;
-    values: Set<string>;
+    values: string[];
     selectors: DropDownValue;
 
     constructor(title: string, values: Set<string>) {
         this.id = randomUUID();
         this.title = title;
-        this.values = values;
+        this.values = Array.from(values);
     }
 }
 
